@@ -1,6 +1,5 @@
 <html>
-<head>
-</head>
+<?php include('head.html') ?>
 <body>
     Hello World!
 </body>

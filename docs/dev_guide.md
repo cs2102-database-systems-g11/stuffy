@@ -21,3 +21,33 @@ By default, the server takes 60 seconds before the cache is updated and for your
 1. Modify the file `<BitnamiRoot>/php/php.ini`
 2. Configure the option `opcache.revalidate_freq=0` 
 3. Restart Apache
+
+## Editing CSS source
+
+*(Optional) This section is only required if you wish to edit the website's CSS.*
+
+We use [Sass](http://sass-lang.com/) for our stylesheets, because once you've used Sass or some other CSS pre-processor, you wouldn't ever want to go back to writing CSS directly.
+
+#### (Setup) Install build tools
+
+1. Install [Node.js](https://nodejs.org/en/download/) for your OS
+2. Navigate to the Stuffy repository
+3. Run the following commands
+
+```bash
+# Install Gulp globally
+npm install -g gulp-cli
+
+# Install dependencies
+npm install 
+```
+
+#### Build Sass source files
+
+Run the following in a terminal:
+
+```bash
+gulp sass:watch
+```
+
+Now any changes you make to the Sass source files will be automatically built and placed in `Stuffy/app/resources/css/style.css`.

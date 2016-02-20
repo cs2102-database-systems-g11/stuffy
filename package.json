@@ -1,0 +1,19 @@
+{
+  "name": "stuffy",
+  "version": "0.0.1",
+  "description": "A website allowing you to easily share your stuff!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cs2102-database-systems-g11/stuffy.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cs2102-database-systems-g11/stuffy/issues"
+  },
+  "homepage": "https://github.com/cs2102-database-systems-g11/stuffy#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.2.0"
+  }
+}
