@@ -14,13 +14,19 @@ By default files are served from `<BitnamiRoot>/apache2/htdocs`. In this reposit
     - *(Windows)* `mklink /D /path/to/htdocs /path/to/app`
     - *(Mac/Unix)* `ln -s /path/to/app /path/to/htdocs`
 
-#### Step 3. Configure the server to refresh files on change
+#### Step 3. Configure the server to make your life easier
 
-By default, the server takes 60 seconds before the cache is updated and for your browser to reflect file changes. To have the server update immediately, do the following:
+1. Edit the file `<BitnamiRoot>/php/php.ini`
+2. Set option `opcache.revalidate_freq=0`  (React to file changes immediately)
+3. Set option `display_errors = On` (Show me the errors!)
+4. Restart Apache
 
-1. Modify the file `<BitnamiRoot>/php/php.ini`
-2. Configure the option `opcache.revalidate_freq=0` 
-3. Restart Apache
+#### Step 4. Configure your database password
+
+Instead of embedding the database password within the source code (super bad practice), we define it in a separate file as an environment variable for use within the code. Still not best practice, but somewhat more secure.
+
+1. Edit the file `<BitnamiRoot>/apache2/conf/httpd.conf`
+2. Add `SetEnv DB_PASSWORD <your_database_password>` to the very last line
 
 ## Editing CSS source
 
