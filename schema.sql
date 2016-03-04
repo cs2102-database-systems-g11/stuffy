@@ -45,7 +45,7 @@ CREATE TABLE advertise_item (
     return_location character varying(512),
     return_date date NOT NULL,
     owner character varying(128) NOT NULL,
-    CONSTRAINT advertise_item_type_check CHECK (((type)::text = ANY (ARRAY[('tool'::character varying)::text, ('appliance'::character varying)::text, ('furniture'::character varying)::text, ('book'::character varying)::text, ('others'::character varying)::text])))
+    CONSTRAINT advertise_item_type_check CHECK (((type)::text = ANY ((ARRAY['tool'::character varying, 'appliance'::character varying, 'furniture'::character varying, 'book'::character varying, 'others'::character varying])::text[])))
 );
 
 
@@ -56,12 +56,11 @@ ALTER TABLE advertise_item OWNER TO postgres;
 --
 
 CREATE TABLE bid (
-    highest_bidder character varying(128) NOT NULL,
-    created date NOT NULL,
-    num_bidders integer DEFAULT 1 NOT NULL,
-    current_bid integer NOT NULL,
+    owner character varying(128) NOT NULL,
     item_name character varying(128) NOT NULL,
-    owner character varying(128) NOT NULL
+    bidder character varying(128),
+    created date NOT NULL,
+    bid integer NOT NULL
 );
 
 
@@ -88,14 +87,6 @@ CREATE TABLE users (
 ALTER TABLE users OWNER TO postgres;
 
 --
--- Name: advertise_item_item_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
---
-
-ALTER TABLE ONLY advertise_item
-    ADD CONSTRAINT advertise_item_item_name_key UNIQUE (item_name);
-
-
---
 -- Name: advertise_item_owner_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -116,7 +107,7 @@ ALTER TABLE ONLY advertise_item
 --
 
 ALTER TABLE ONLY bid
-    ADD CONSTRAINT bid_pkey PRIMARY KEY (item_name, owner, highest_bidder);
+    ADD CONSTRAINT bid_pkey PRIMARY KEY (owner, item_name, bid);
 
 
 --
