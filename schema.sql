@@ -10,22 +10,6 @@ SET check_function_bodies = false;
 SET client_min_messages = warning;
 
 --
--- Name: postgres; Type: COMMENT; Schema: -; Owner: postgres
---
-
-COMMENT ON DATABASE postgres IS 'default administrative connection database';
-
-
---
--- Name: StuffSharing; Type: SCHEMA; Schema: -; Owner: postgres
---
-
-CREATE SCHEMA "StuffSharing";
-
-
-ALTER SCHEMA "StuffSharing" OWNER TO postgres;
-
---
 -- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
 --
 
@@ -39,17 +23,17 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
-SET search_path = "StuffSharing", pg_catalog;
+SET search_path = public, pg_catalog;
 
 SET default_tablespace = '';
 
 SET default_with_oids = false;
 
 --
--- Name: Advertise_Item; Type: TABLE; Schema: StuffSharing; Owner: postgres; Tablespace: 
+-- Name: advertise_item; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
-CREATE TABLE "Advertise_Item" (
+CREATE TABLE advertise_item (
     type character varying(9) NOT NULL,
     item_name character varying(128) NOT NULL,
     description character varying(1024),
@@ -61,17 +45,17 @@ CREATE TABLE "Advertise_Item" (
     return_location character varying(512),
     return_date date NOT NULL,
     owner character varying(128) NOT NULL,
-    CONSTRAINT type CHECK (((((((type)::text = 'tool'::text) OR ((type)::text = 'appliance'::text)) OR ((type)::text = 'furniture'::text)) OR ((type)::text = 'book'::text)) OR ((type)::text = 'others'::text)))
+    CONSTRAINT advertise_item_type_check CHECK (((type)::text = ANY (ARRAY[('tool'::character varying)::text, ('appliance'::character varying)::text, ('furniture'::character varying)::text, ('book'::character varying)::text, ('others'::character varying)::text])))
 );
 
 
-ALTER TABLE "Advertise_Item" OWNER TO postgres;
+ALTER TABLE advertise_item OWNER TO postgres;
 
 --
--- Name: Bid; Type: TABLE; Schema: StuffSharing; Owner: postgres; Tablespace: 
+-- Name: bid; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
-CREATE TABLE "Bid" (
+CREATE TABLE bid (
     highest_bidder character varying(128) NOT NULL,
     created date NOT NULL,
     num_bidders integer DEFAULT 1 NOT NULL,
@@ -81,106 +65,100 @@ CREATE TABLE "Bid" (
 );
 
 
-ALTER TABLE "Bid" OWNER TO postgres;
+ALTER TABLE bid OWNER TO postgres;
 
 --
--- Name: Users; Type: TABLE; Schema: StuffSharing; Owner: postgres; Tablespace: 
+-- Name: users; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
-CREATE TABLE "Users" (
+CREATE TABLE users (
     first_name character varying(128) NOT NULL,
     last_name character varying(64) NOT NULL,
-    gender character(1) NOT NULL,
+    gender character(1),
     description character varying(1024),
     contact_number character varying(32),
     address character varying(512) NOT NULL,
     email character varying(128) NOT NULL,
     username character varying(128) NOT NULL,
     password character(128) NOT NULL,
-    CONSTRAINT gender CHECK (((gender = 'M'::bpchar) OR (gender = 'F'::bpchar)))
+    CONSTRAINT users_gender_check CHECK (((gender = 'M'::bpchar) OR (gender = 'F'::bpchar)))
 );
 
 
-ALTER TABLE "Users" OWNER TO postgres;
+ALTER TABLE users OWNER TO postgres;
 
 --
--- Name: Advertise_Item_pkey; Type: CONSTRAINT; Schema: StuffSharing; Owner: postgres; Tablespace: 
+-- Name: advertise_item_item_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
-ALTER TABLE ONLY "Advertise_Item"
-    ADD CONSTRAINT "Advertise_Item_pkey" PRIMARY KEY (item_name, owner);
-
-
---
--- Name: Bid_pkey; Type: CONSTRAINT; Schema: StuffSharing; Owner: postgres; Tablespace: 
---
-
-ALTER TABLE ONLY "Bid"
-    ADD CONSTRAINT "Bid_pkey" PRIMARY KEY (highest_bidder, item_name, owner);
+ALTER TABLE ONLY advertise_item
+    ADD CONSTRAINT advertise_item_item_name_key UNIQUE (item_name);
 
 
 --
--- Name: Users_pkey; Type: CONSTRAINT; Schema: StuffSharing; Owner: postgres; Tablespace: 
+-- Name: advertise_item_owner_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
-ALTER TABLE ONLY "Users"
-    ADD CONSTRAINT "Users_pkey" PRIMARY KEY (email);
-
-
---
--- Name: Users_username_key; Type: CONSTRAINT; Schema: StuffSharing; Owner: postgres; Tablespace: 
---
-
-ALTER TABLE ONLY "Users"
-    ADD CONSTRAINT "Users_username_key" UNIQUE (username);
+ALTER TABLE ONLY advertise_item
+    ADD CONSTRAINT advertise_item_owner_key UNIQUE (owner);
 
 
 --
--- Name: email; Type: CONSTRAINT; Schema: StuffSharing; Owner: postgres; Tablespace: 
+-- Name: advertise_item_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
-ALTER TABLE ONLY "Users"
-    ADD CONSTRAINT email UNIQUE (email);
-
-
---
--- Name: item_name; Type: CONSTRAINT; Schema: StuffSharing; Owner: postgres; Tablespace: 
---
-
-ALTER TABLE ONLY "Advertise_Item"
-    ADD CONSTRAINT item_name UNIQUE (item_name);
+ALTER TABLE ONLY advertise_item
+    ADD CONSTRAINT advertise_item_pkey PRIMARY KEY (owner, item_name);
 
 
 --
--- Name: owner; Type: CONSTRAINT; Schema: StuffSharing; Owner: postgres; Tablespace: 
+-- Name: bid_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
-ALTER TABLE ONLY "Advertise_Item"
-    ADD CONSTRAINT owner UNIQUE (owner);
-
-
---
--- Name: Advertise_Item_owner_fkey; Type: FK CONSTRAINT; Schema: StuffSharing; Owner: postgres
---
-
-ALTER TABLE ONLY "Advertise_Item"
-    ADD CONSTRAINT "Advertise_Item_owner_fkey" FOREIGN KEY (owner) REFERENCES "Users"(email) ON UPDATE CASCADE ON DELETE CASCADE;
+ALTER TABLE ONLY bid
+    ADD CONSTRAINT bid_pkey PRIMARY KEY (item_name, owner, highest_bidder);
 
 
 --
--- Name: item_name; Type: FK CONSTRAINT; Schema: StuffSharing; Owner: postgres
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
-ALTER TABLE ONLY "Bid"
-    ADD CONSTRAINT item_name FOREIGN KEY (item_name) REFERENCES "Advertise_Item"(item_name) ON UPDATE CASCADE ON DELETE CASCADE;
+ALTER TABLE ONLY users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (email);
 
 
 --
--- Name: owner; Type: FK CONSTRAINT; Schema: StuffSharing; Owner: postgres
+-- Name: users_username_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
-ALTER TABLE ONLY "Bid"
-    ADD CONSTRAINT owner FOREIGN KEY (owner) REFERENCES "Advertise_Item"(owner) ON UPDATE CASCADE ON DELETE CASCADE;
+ALTER TABLE ONLY users
+    ADD CONSTRAINT users_username_key UNIQUE (username);
+
+
+--
+-- Name: advertise_item_owner_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY advertise_item
+    ADD CONSTRAINT advertise_item_owner_fkey FOREIGN KEY (owner) REFERENCES users(email) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: bid_owner_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY bid
+    ADD CONSTRAINT bid_owner_fkey FOREIGN KEY (owner, item_name) REFERENCES advertise_item(owner, item_name) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
 
 
 --

@@ -5,7 +5,26 @@
 
 #### Step 1. Install the [Bitnami Stack](https://bitnami.com/tag/postgresql) for your OS
 
-#### Step 2. Replace the `htdocs` folder with `/app`
+#### Step 2. Set up the database
+
+**Simple method**:
+
+1. Go to the [phppgadmin](http://localhost/phppgadmin/) page
+2. Create a database called `stuffy_db`
+3. Select stuffy_db followed by the SQL tab
+4. Browse to select `schema.sql`
+5. Uncheck "Paginate results"
+6. Execute
+
+**Faster method**:
+
+```
+cd <BitnamiRoot>/postgres/bin
+createdb -U postgres stuffy_db
+psql -U postgres -f schema.sql stuffy_db
+```
+
+#### Step 3. Replace the `htdocs` folder with `/app`
 
 By default files are served from `<BitnamiRoot>/apache2/htdocs`. In this repository, the .php files are stored in the `/app` directory. To link the two folders together, do the following:
 
@@ -14,14 +33,14 @@ By default files are served from `<BitnamiRoot>/apache2/htdocs`. In this reposit
     - *(Windows)* `mklink /D /path/to/htdocs /path/to/app`
     - *(Mac/Unix)* `ln -s /path/to/app /path/to/htdocs`
 
-#### Step 3. Configure the server to make your life easier
+#### Step 4. Configure the server to make your life easier
 
 1. Edit the file `<BitnamiRoot>/php/php.ini`
 2. Set option `opcache.revalidate_freq=0`  (React to file changes immediately)
 3. Set option `display_errors = On` (Show me the errors!)
 4. Restart Apache
 
-#### Step 4. Configure your database password
+#### Step 5. Configure your database password
 
 Instead of embedding the database password within the source code (super bad practice), we define it in a separate file as an environment variable for use within the code. Still not best practice, but somewhat more secure.
 
