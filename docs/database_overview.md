@@ -2,7 +2,7 @@
 
 An overview of the database schema in human-readable form.
 
-```
+```sql
 CREATE TABLE users (
  first_name VARCHAR(128) NOT NULL,
  last_name VARCHAR(64) NOT NULL,
