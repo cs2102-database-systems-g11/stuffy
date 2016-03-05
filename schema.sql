@@ -67,10 +67,10 @@ CREATE TABLE bid (
 ALTER TABLE bid OWNER TO postgres;
 
 --
--- Name: Borrow; Type: VIEW; Schema: public; Owner: postgres
+-- Name: borrow; Type: VIEW; Schema: public; Owner: postgres
 --
 
-CREATE VIEW "Borrow" AS
+CREATE VIEW borrow AS
  SELECT b.item_name,
     b.owner,
     max(b.bid) AS winning_bid
@@ -80,7 +80,7 @@ CREATE VIEW "Borrow" AS
   GROUP BY b.item_name, b.owner;
 
 
-ALTER TABLE "Borrow" OWNER TO postgres;
+ALTER TABLE borrow OWNER TO postgres;
 
 --
 -- Name: users; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
