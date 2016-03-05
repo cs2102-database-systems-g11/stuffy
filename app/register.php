@@ -17,7 +17,7 @@
                     <form method='post'>
                         <div class="form-group">
                             <label for="input-username">Username</label>
-                            <input type="text" name='username' class="form-control" id="input-username" placeholder="Username" required="true">
+                            <input type="text" name='username' class="form-control" id="input-username" placeholder="Username" required="true" autofocus>
                         </div>
                         <div class="form-group">
                             <label for="input-password">Password</label>
@@ -38,16 +38,35 @@
                                 </label>
                             </div>
                         </div>
-                        <button type="submit" name="register_submit" class="btn btn-default">Register</button>
+                        <button type="submit" name="register-submit" class="btn btn-default">Register</button>
                     </form>
                 </div>
             </div>
         </div>
-        <?php if(isset($_POST['register_submit']))
+        <?php if(isset($_POST['register-submit']))
         {
-            $params = array($_POST["username"], $_POST["password"], $_POST["email"], $_POST["gender"], '');
-            $query = "INSERT INTO users VALUES ($1, $2, $3, $4, $5)";
-            $result = pg_query_params($dbconn, $query, $params) or die("Query failed: " . pg_last_error());
+            function validate_field_exists($dbconn, $column, $value) {
+                $params = array($value);
+                $query = "SELECT * FROM users WHERE " . $column . " = $1;";
+                $result = pg_query_params($dbconn, $query, $params);
+                if (pg_num_rows($result) > 0) {
+                    echo "<script>prepend_html('.content', \"<div class='alert alert-danger' role='alert'>" . ucFirst($column) . " already exists.</div>\");</script>";
+                    die();
+                }
+            }
+
+            validate_field_exists($dbconn, 'username', $_POST['username']);
+            validate_field_exists($dbconn, 'email', $_POST['email']);
+
+            $params = array($_POST["email"], $_POST["username"], $_POST["password"], '', '', $_POST["gender"], '', '', '');
+            $query = "INSERT INTO users VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)";
+            $result = pg_query_params($dbconn, $query, $params);
+            if ($result) {
+                echo "<script>redirect('/login.php?reg_success=1')</script>";
+            } else {
+                echo "<script>notify('danger', 'Registration error.');</script>";
+                die("Query failed: " . pg_last_error());
+            }
         }
         ?>
     </body>

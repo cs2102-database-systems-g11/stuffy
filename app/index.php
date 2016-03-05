@@ -4,14 +4,13 @@
         <?php include('header.php') ?>
         <div class='content'>
             <div class="panel panel-default">
-                <div class="panel-heading">development quicklinks</div>
                 <div class="panel-body">
-                    <ul>
-                        <li><a href='/register.php'>register</a>
-                        <li><a href='/login.php'>login</a>
-                    </ul>
+                    nothing here
                 </div>
             </div>
         </div>
+        <?php if (isset($_GET['logged_out'])) {
+            echo "<script>notify('success', 'Logged out.');</script>";
+        } ?>
     </body>
 </html>
