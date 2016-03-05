@@ -41,7 +41,6 @@
                 if (session_status() == PHP_SESSION_NONE) {
                     session_start();
                 }
-                unset($_SESSION['username']);
                 $_SESSION['username'] = $params[0];
                 echo "<script>redirect('/')</script>";
             } else {
