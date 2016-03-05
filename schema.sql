@@ -45,7 +45,7 @@ CREATE TABLE advertise_item (
     pickup_location character varying(512),
     return_location character varying(512),
     return_date date NOT NULL,
-    CONSTRAINT advertise_item_type_check CHECK (((type)::text = ANY ((ARRAY['tool'::character varying, 'appliance'::character varying, 'furniture'::character varying, 'book'::character varying, 'others'::character varying])::text[])))
+    CONSTRAINT advertise_item_type_check CHECK (((type)::text = ANY (ARRAY[('tool'::character varying)::text, ('appliance'::character varying)::text, ('furniture'::character varying)::text, ('book'::character varying)::text, ('others'::character varying)::text])))
 );
 
 
@@ -67,6 +67,22 @@ CREATE TABLE bid (
 ALTER TABLE bid OWNER TO postgres;
 
 --
+-- Name: Borrow; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW "Borrow" AS
+ SELECT b.item_name,
+    b.owner,
+    max(b.bid) AS winning_bid
+   FROM advertise_item a,
+    bid b
+  WHERE (((((a.owner)::text = (b.owner)::text) AND ((a.item_name)::text = (b.item_name)::text)) AND (a.bid_deadline < now())) AND (b.bid >= a.starting_bid))
+  GROUP BY b.item_name, b.owner;
+
+
+ALTER TABLE "Borrow" OWNER TO postgres;
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -85,14 +101,6 @@ CREATE TABLE users (
 
 
 ALTER TABLE users OWNER TO postgres;
-
---
--- Name: advertise_item_owner_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
---
-
-ALTER TABLE ONLY advertise_item
-    ADD CONSTRAINT advertise_item_owner_key UNIQUE (owner);
-
 
 --
 -- Name: advertise_item_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
