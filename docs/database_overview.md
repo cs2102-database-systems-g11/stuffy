@@ -17,7 +17,7 @@ CREATE TABLE users (
 
 
 CREATE TABLE advertise_item (
- owner VARCHAR(128) NOT NULL UNIQUE,
+ owner VARCHAR(128) NOT NULL,
  item_name VARCHAR(128) NOT NULL,
  type VARCHAR(9) NOT NULL,
  description VARCHAR(1024),
@@ -43,4 +43,10 @@ CREATE TABLE bid (
  PRIMARY KEY(owner, item_name, bid),
  FOREIGN KEY(owner, item_name) REFERENCES advertise_item(owner, item_name) on update cascade on delete cascade
 );
+
+CREATE VIEW borrow AS
+ SELECT b.item_name, b.owner, max(b.bid) AS winning_bid
+ FROM advertise_item a, bid b
+ WHERE a.owner = b.owner AND a.item_name = b.item_name AND a.bid_deadline < now() AND b.bid >= a.starting_bid
+ GROUP BY b.item_name, b.owner;
 ```
