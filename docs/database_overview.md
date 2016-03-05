@@ -4,21 +4,22 @@ An overview of the database schema in human-readable form.
 
 ```sql
 CREATE TABLE users (
+ email VARCHAR(128) PRIMARY KEY,
+ username VARCHAR(128) NOT NULL UNIQUE,
+ password CHAR(128) NOT NULL,
  first_name VARCHAR(128) NOT NULL,
  last_name VARCHAR(64) NOT NULL,
  gender CHAR(1) CHECK(gender = 'M' OR gender = 'F'),
  description VARCHAR(1024),
  contact_number VARCHAR(32),
- address VARCHAR(512) NOT NULL,
- email VARCHAR(128) PRIMARY KEY,
- username VARCHAR(128) NOT NULL UNIQUE,
- password CHAR(128) NOT NULL
+ address VARCHAR(512) NOT NULL
 );
 
 
 CREATE TABLE advertise_item (
- type VARCHAR(9) NOT NULL,
+ owner VARCHAR(128) NOT NULL UNIQUE,
  item_name VARCHAR(128) NOT NULL,
+ type VARCHAR(9) NOT NULL,
  description VARCHAR(1024),
  starting_bid INT,
  bid_deadline DATE,
@@ -27,7 +28,6 @@ CREATE TABLE advertise_item (
  pickup_location VARCHAR(512),
  return_location VARCHAR(512),
  return_date DATE NOT NULL,
- owner VARCHAR(128) NOT NULL UNIQUE,
  UNIQUE (owner, item_name),
  PRIMARY KEY(owner, item_name),
  FOREIGN KEY(owner) REFERENCES users(email) on delete cascade on update cascade,
@@ -37,9 +37,9 @@ CREATE TABLE advertise_item (
 CREATE TABLE bid (
  owner VARCHAR(128),
  item_name VARCHAR(128),
+ bid INT NOT NULL,
  bidder VARCHAR(128),
  created DATE NOT NULL,
- bid INT NOT NULL,
  PRIMARY KEY(owner, item_name, bid),
  FOREIGN KEY(owner, item_name) REFERENCES advertise_item(owner, item_name) on update cascade on delete cascade
 );

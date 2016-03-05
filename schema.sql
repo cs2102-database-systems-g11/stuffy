@@ -34,8 +34,9 @@ SET default_with_oids = false;
 --
 
 CREATE TABLE advertise_item (
-    type character varying(9) NOT NULL,
+    owner character varying(128) NOT NULL,
     item_name character varying(128) NOT NULL,
+    type character varying(9) NOT NULL,
     description character varying(1024),
     starting_bid integer,
     bid_deadline date,
@@ -44,7 +45,6 @@ CREATE TABLE advertise_item (
     pickup_location character varying(512),
     return_location character varying(512),
     return_date date NOT NULL,
-    owner character varying(128) NOT NULL,
     CONSTRAINT advertise_item_type_check CHECK (((type)::text = ANY ((ARRAY['tool'::character varying, 'appliance'::character varying, 'furniture'::character varying, 'book'::character varying, 'others'::character varying])::text[])))
 );
 
@@ -58,9 +58,9 @@ ALTER TABLE advertise_item OWNER TO postgres;
 CREATE TABLE bid (
     owner character varying(128) NOT NULL,
     item_name character varying(128) NOT NULL,
+    bid integer NOT NULL,
     bidder character varying(128),
-    created date NOT NULL,
-    bid integer NOT NULL
+    created date NOT NULL
 );
 
 
@@ -71,15 +71,15 @@ ALTER TABLE bid OWNER TO postgres;
 --
 
 CREATE TABLE users (
+    email character varying(128) NOT NULL,
+    username character varying(128) NOT NULL,
+    password character(128) NOT NULL,
     first_name character varying(128) NOT NULL,
     last_name character varying(64) NOT NULL,
     gender character(1),
     description character varying(1024),
     contact_number character varying(32),
     address character varying(512) NOT NULL,
-    email character varying(128) NOT NULL,
-    username character varying(128) NOT NULL,
-    password character(128) NOT NULL,
     CONSTRAINT users_gender_check CHECK (((gender = 'M'::bpchar) OR (gender = 'F'::bpchar)))
 );
 
