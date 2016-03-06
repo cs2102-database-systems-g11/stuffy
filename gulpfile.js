@@ -9,7 +9,7 @@ var cssFilename = 'style.css';
  
 gulp.task('sass', function () {
   return gulp.src('./sass/**/*.scss')
-    .pipe(sass({outputStyle: 'compact'}).on('error', sass.logError))
+    .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
     .pipe(rename(cssFilename))
     .pipe(gulp.dest(cssPath));
 });

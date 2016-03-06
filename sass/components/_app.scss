@@ -3,3 +3,37 @@
     margin: auto;
     padding: 0px $spacing-unit/2;
 }
+
+.navbar {
+    .container-fluid {
+        max-width: $content-width;
+    }
+}
+
+.user-profile {
+    .form-group{
+        .form-group-content {
+            margin-top: 7px;
+            font-weight: 400;
+        }
+    }
+}
+
+.grid-list {
+    .grid-list-item .item-content {
+        @include box-shadow(1);
+
+        .caption {
+            padding: 0px;
+            .title {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+    }
+}
+
+.margin-bottom-20 {
+    margin-bottom: 20px;
+}
