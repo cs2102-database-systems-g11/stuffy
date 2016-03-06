@@ -79,6 +79,27 @@
             }
         }
 
+        // on password update
+        if(isset($_POST['update-password-submit'])) {
+            $params = array($_POST["current-password"], $username);
+            $query = "SELECT * FROM users WHERE password = $1 AND username = $2";
+            $result = pg_query_params($dbconn, $query, $params);
+
+            if (pg_num_rows($result) > 0) {
+                $params = array($_POST["new-password"], $username);
+                $query = "UPDATE users SET password = $1 WHERE username = $2";
+                $result = pg_query_params($dbconn, $query, $params);
+                if ($result) {
+                    create_notification('success', 'Password updated!');
+                } else {
+                    die("Query failed: " . pg_last_error());
+                }
+            } else {
+                create_notification('danger', 'Current password is not correct.');
+            }
+
+        }
+
         $firstName = '';
         $lastName = '';
         $gender = '';
