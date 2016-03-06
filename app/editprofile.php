@@ -29,6 +29,56 @@
             }
         }
 
+        // on email update
+        if(isset($_POST['update-email-submit'])) {
+            $password = trim($_POST['confirm-password']);
+            $email = trim($_POST['email']);
+            $valid = true;
+
+            if ($email == '') {
+                create_notification('warning', 'Select a new email address.');
+                $valid = false;
+            } else if ($password == '') {
+                create_notification('warning', 'Confirm your current password.');
+                $valid = false;
+            }
+
+            // check if new email is unused
+            if ($valid) {
+                $params = array($email);
+                $query = 'SELECT * from users WHERE email = $1';
+                $result = pg_query_params($dbconn, $query, $params);
+                if (pg_num_rows($result) > 0) {
+                    create_notification('danger', 'Email is already being used.');
+                    $valid = false;
+                }
+            }
+
+            // check if password is correct
+            if ($valid) {
+                $params = array($password, $username);
+                $query = 'SELECT * from users WHERE password = $1 AND username = $2';
+                $result = pg_query_params($dbconn, $query, $params);
+                if (pg_num_rows($result) == 0) {
+                    create_notification('danger', 'Password is not correct.');
+                    $valid = false;
+                }
+            }
+
+            // finally update the row if all fields are validated
+            if ($valid) {
+                $params = array($email, $password, $username);
+                $query = "UPDATE users SET email = $1 WHERE password = $2 AND username = $3";
+                $result = pg_query_params($dbconn, $query, $params);
+
+                if ($result) {
+                    create_notification('success', 'Email updated!');
+                } else {
+                    die("Query failed: " . pg_last_error());
+                }
+            }
+        }
+
         $firstName = '';
         $lastName = '';
         $gender = '';
@@ -97,7 +147,7 @@
                         <div class="form-group">
                             <label for="email" class="col-sm-3 control-label">Email: </label>
                             <div class="col-sm-9">
-                                <input type="text" name='email' class="form-control" id="input-email" placeholder="Email address">
+                                <input type="email" name='email' class="form-control" id="input-email" placeholder="Email address">
                             </div>
                         </div>
                         <div class="form-group">
@@ -106,7 +156,7 @@
                                 <input type="password" name='confirm-password' class="form-control" id="input-confirm-password" placeholder="Current password">
                             </div>
                         </div>
-                        <button class="btn btn-default" name='update-email-submit' type="submit">Update Profile</button>
+                        <button class="btn btn-default" name='update-email-submit' type="submit">Update Email</button>
                     </form>
                 </div>
             </div>
