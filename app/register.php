@@ -1,3 +1,4 @@
+<?php include('/functions.php'); ?>
 <html>
     <?php include('head.html') ?>
     <?php
@@ -50,7 +51,7 @@
                 $query = "SELECT * FROM users WHERE " . $column . " = $1;";
                 $result = pg_query_params($dbconn, $query, $params);
                 if (pg_num_rows($result) > 0) {
-                    echo "<script>prepend_html('.content', \"<div class='alert alert-danger' role='alert'>" . ucFirst($column) . " already exists.</div>\");</script>";
+                    create_notification('danger', ucFirst($column) . ' already exists.');
                     die();
                 }
             }
@@ -64,7 +65,7 @@
             if ($result) {
                 echo "<script>redirect('/login.php?reg_success=1')</script>";
             } else {
-                echo "<script>notify('danger', 'Registration error.');</script>";
+                create_notification('danger', 'Registration error.');
                 die("Query failed: " . pg_last_error());
             }
         }

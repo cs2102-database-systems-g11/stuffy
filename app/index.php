@@ -1,3 +1,4 @@
+<?php include('/functions.php'); ?>
 <html>
     <?php include('head.html') ?>
     <body>
@@ -10,7 +11,7 @@
             </div>
         </div>
         <?php if (isset($_GET['logged_out'])) {
-            echo "<script>notify('success', 'Logged out.');</script>";
+            create_notification('success', 'Logged out.');
         } ?>
     </body>
 </html>

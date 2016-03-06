@@ -1,3 +1,4 @@
+<?php include('/functions.php'); ?>
 <html>
     <?php include('head.html') ?>
     <?php
@@ -30,7 +31,7 @@
         </div>
 
         <?php if (isset($_GET['reg_success'])) {
-            echo "<script>notify('success', 'Registration successful.');</script>";
+            create_notification('success', 'Registration successful.');
         } ?>
         <?php if(isset($_POST['login-submit']))
         {
@@ -44,7 +45,7 @@
                 $_SESSION['username'] = $params[0];
                 echo "<script>redirect('/')</script>";
             } else {
-                echo "<script>notify('danger', 'Invalid username or password.');</script>";
+                create_notification('success', 'Invalid username or password.');
             }
         }
         ?>

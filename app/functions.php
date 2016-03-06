@@ -7,4 +7,8 @@
             header('Location: ' . '/login.php');
         }
     }
+
+    function create_notification($type, $msg) {
+        echo "<script>$(document).ready(function() { notify('" . $type . "', '" . $msg . "'); });</script>";
+    }
 ?>

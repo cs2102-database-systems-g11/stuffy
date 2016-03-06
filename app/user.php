@@ -1,3 +1,4 @@
+<?php include('/functions.php'); ?>
 <html>
     <?php include('head.html') ?>
     <?php
@@ -8,8 +9,7 @@
     ?>
     <?php
         $username = '';
-        $firstName = '';
-        $lastName = '';
+        $name = '';
         $gender = '';
         $description = '';
         $exists = true;
@@ -28,8 +28,10 @@
         $result = pg_query_params($dbconn, $query, $params) or die("Query failed: " . pg_last_error());
         if (pg_num_rows($result) > 0) {
             $row = pg_fetch_array($result);
-            $firstName = $row['first_name'] != '' ? $row['first_name'] : '(unset)';
-            $lastName = $row['last_name'] != '' ? $row['last_name'] : '(unset)';
+            $firstName = $row['first_name'];
+            $lastName = $row['last_name'];
+            $name = $firstName . ' ' . $lastName;
+            $name = trim($name) != '' ? $name : '(unset)';
             $gender = $row['gender'] == 'M' ? 'Male' : 'Female';
             $description = $row['description'] != '' ? $row['description'] : '(unset)';
         } else {
@@ -47,15 +49,9 @@
                 <div class="panel-body">
                     <div class="form-horizontal user-profile">
                         <div class="form-group">
-                            <label for="first-name" class="col-sm-2 control-label">First Name: </label>
+                            <label for="name" class="col-sm-2 control-label">Name: </label>
                             <div class="col-sm-10 form-group-content">
-                                <?php echo $firstName ?>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="last-name" class="col-sm-2 control-label">Last Name: </label>
-                            <div class="col-sm-10 form-group-content">
-                                <?php echo $lastName ?>
+                                <?php echo $name ?>
                             </div>
                         </div>
                         <div class="form-group">
@@ -71,12 +67,13 @@
                             </div>
                         </div>
                     </div>
+                    <a class="btn btn-default" href="/editprofile.php" role="button">Edit Profile</a>
                 </div>
             </div>
             <?php 
                 if (!$exists) {
                     echo "<script>document.querySelector('.panel').remove();</script>";
-                    echo "<script>notify('danger', 'User does not exist');</script>";
+                    create_notification('danger', 'User does not exist.');
                 }
             ?>
         </div>
