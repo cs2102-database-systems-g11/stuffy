@@ -31,7 +31,7 @@ CREATE TABLE advertise_item (
  UNIQUE (owner, item_name),
  PRIMARY KEY(owner, item_name),
  FOREIGN KEY(owner) REFERENCES users(email) on delete cascade on update cascade,
- CHECK (type in ('tool', 'appliance', 'furniture', 'book', 'others'))
+ CHECK (type in ('Tool', 'Appliance', 'Furniture', 'Book', 'Others'))
 );
 
 CREATE TABLE bid (

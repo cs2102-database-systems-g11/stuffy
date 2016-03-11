@@ -45,7 +45,7 @@ CREATE TABLE advertise_item (
     pickup_location character varying(512),
     return_location character varying(512),
     return_date date NOT NULL,
-    CONSTRAINT advertise_item_type_check CHECK (((type)::text = ANY (ARRAY[('tool'::character varying)::text, ('appliance'::character varying)::text, ('furniture'::character varying)::text, ('book'::character varying)::text, ('others'::character varying)::text])))
+    CONSTRAINT advertise_item_type_check CHECK (((type)::text = ANY ((ARRAY['Tool'::character varying, 'Appliance'::character varying, 'Furniture'::character varying, 'Book'::character varying, 'Others'::character varying])::text[])))
 );
 
 

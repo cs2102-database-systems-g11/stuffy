@@ -33,11 +33,11 @@
                             <div class="form-group col-sm-6">
                                 <label for="type" class="control-label">Type</label>
                                 <select class='selectpicker form-control' name='type'>
-                                <option>appliance</option>
-                                <option>book</option>
-                                <option>furniture</option>
-                                <option>tool</option>
-                                <option selected>others</option>
+                                <option>Appliance</option>
+                                <option>Book</option>
+                                <option>Furniture</option>
+                                <option>Tool</option>
+                                <option selected>Others</option>
                                 </select>
                             </div>
                         </div>
