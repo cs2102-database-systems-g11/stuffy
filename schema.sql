@@ -39,7 +39,7 @@ CREATE TABLE advertise_item (
     type character varying(9) NOT NULL,
     description character varying(1024),
     starting_bid integer,
-    bid_deadline date,
+    bid_deadline date NOT NULL,
     buyout integer,
     available_quantity integer DEFAULT 1,
     pickup_location character varying(512),

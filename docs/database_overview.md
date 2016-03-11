@@ -22,7 +22,7 @@ CREATE TABLE advertise_item (
  type VARCHAR(9) NOT NULL,
  description VARCHAR(1024),
  starting_bid INT,
- bid_deadline DATE,
+ bid_deadline DATE NOT NULL,
  buyout INT,
  available_quantity INT DEFAULT 1,
  pickup_location VARCHAR(512),
