@@ -1,10 +1,10 @@
-<div class="container-fluid search-bar panel panel-default">
+<form method='post' class="container-fluid search-bar panel panel-default">
     <div class='panel-body'>
         <div class='main-search-wrapper'>
             <div class="input-group main-search">
-                <input type="text" class="form-control" placeholder="Item name or description" autofocus/>
+                <input type="text" name='search-query' class="form-control" placeholder="Item name or description" autofocus/>
                 <span class="input-group-btn">
-                    <button class="btn btn-default" type="button">Search!</button>
+                    <button class="btn btn-default" name='search-submit' type="submit">Search!</button>
                 </span>
             </div>
             <div class='adv-search-toggle'>
@@ -47,4 +47,4 @@
             </div>
         </div>
     </div>
-</div>
+</form>
