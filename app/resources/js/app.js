@@ -15,3 +15,9 @@ function notify(type, text) {
         }
     }
 }
+
+function copy_input_values(srcId, dstId) {
+    var src = document.getElementById(srcId);
+    var dst = document.getElementById(dstId);
+    dst.value = src.value;
+}

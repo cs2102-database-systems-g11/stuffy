@@ -74,7 +74,7 @@
                             <div class="input-group">
                                 <input type="text" name='return-location' class="form-control" value='' placeholder="Return Location" id='rl'>
                                 <span class="input-group-btn">
-                                    <button class="btn btn-default" id='match-pickup-btn' type="button" onClick="copy();"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> Match Pickup</button>
+                                    <button class="btn btn-default" id='match-pickup-btn' type="button" onClick="copy_input_values('pl', 'rl');"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> Match Pickup</button>
                                 </span>
                             </div>
                         </div>
@@ -87,14 +87,6 @@
                 </div>
             </div>
         </div>
-		<script>
-		function copy()
-		{
-		  var pickup_loc = document.getElementById('pl');
-		  var return_loc = document.getElementById('rl');
-		  return_loc.value = pickup_loc.value;
-		}
-		</script>
 		<?php if (isset($_GET['adv_item_success'])) {
             create_notification('success', 'Item advertisement created successfully.');
         } ?>
