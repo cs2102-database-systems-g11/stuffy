@@ -43,7 +43,7 @@
                     session_start();
                 }
                 $_SESSION['username'] = $params[0];
-                echo "<script>redirect('/')</script>";
+                redirect('/');
             } else {
                 create_notification('success', 'Invalid username or password.');
             }

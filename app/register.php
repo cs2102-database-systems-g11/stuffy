@@ -63,7 +63,7 @@
             $query = "INSERT INTO users VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)";
             $result = pg_query_params($dbconn, $query, $params);
             if ($result) {
-                echo "<script>redirect('/login.php?reg_success=1')</script>";
+                redirect('/login.php?reg_success=1');
             } else {
                 create_notification('danger', 'Registration error.');
                 die("Query failed: " . pg_last_error());
