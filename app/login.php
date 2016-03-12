@@ -45,7 +45,7 @@
                 $_SESSION['username'] = $params[0];
                 redirect('/');
             } else {
-                create_notification('success', 'Invalid username or password.');
+                create_notification('danger', 'Invalid username or password.');
             }
         }
         ?>
