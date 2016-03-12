@@ -11,4 +11,8 @@
     function create_notification($type, $msg) {
         echo "<script>$(document).ready(function() { notify('" . $type . "', '" . $msg . "'); });</script>";
     }
+
+    function redirect($url) {
+        echo "<script>redirect('" . $url . "');</script";
+    }
 ?>

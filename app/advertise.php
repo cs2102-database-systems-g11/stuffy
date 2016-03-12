@@ -137,7 +137,7 @@
 					$query = "SELECT email FROM users WHERE " . $column . " = $1;";
 					return pg_fetch_result(pg_query_params($dbconn, $query, $params), 0, 0);
 				} else {
-					echo "<script>redirect('/login.php')</script>";
+                    redirect('/login.php');
 				}
 			}
 			
@@ -165,12 +165,12 @@
 			}
 			
             $params = array($email, $_POST["item-name"], $_POST["type"], $_POST["description"], $_POST["starting-bid"], 
-							$_POST["bid-deadline"], $buyout, $_POST["quantity"], $_POST["pickup-location"], 
-							$_POST["return-location"], $_POST["return-date"]);
+                $_POST["bid-deadline"], $buyout, $_POST["quantity"], $_POST["pickup-location"],
+                $_POST["return-location"], $_POST["return-date"]);
             $query = "INSERT INTO advertise_item VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)";
             $result = pg_query_params($dbconn, $query, $params);
             if ($result) {
-                echo "<script>redirect('/advertise.php?adv_item_success=1')</script>";
+                redirect('/advertise.php?adv_item_success=1');
             } else {
                 create_notification('danger', 'Add advertisement error.');
                 die("Query failed: " . pg_last_error());

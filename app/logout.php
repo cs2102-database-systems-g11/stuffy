@@ -1,3 +1,4 @@
+<?php include('./functions.php'); ?>
 <html>
     <?php include('head.html') ?>
     <body>
@@ -5,7 +6,7 @@
         <div class='content'>
             <?php
                 session_destroy();
-                echo "<script>redirect('/?logged_out=1')</script>";
+                redirect('/?logged_out=1');
             ?>
             <div class='alert alert-success' role='alert'>Logged out.</div>
         </div>
