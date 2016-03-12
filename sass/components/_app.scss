@@ -19,6 +19,40 @@
     }
 }
 
+.search-bar {
+    margin-bottom: $spacing-unit;
+
+    .main-search-wrapper {
+        display: flex;
+
+        .adv-search-toggle {
+            font-size: 0.8em;
+            margin-left: $spacing-unit/2;
+        }
+
+        @include media-query($small-breakpoint) {
+            display: block;
+            @extend %clearfix;
+
+            .adv-search-toggle {
+                float: right;
+                padding-top: 5px;
+            }
+        }
+    }
+
+    .advanced-search {
+        display: none;
+        margin-top: $spacing-unit/2;
+
+        .input-group {
+            float: left;
+            padding: 0px 5px;
+            margin-bottom: 10px;
+        }
+    }
+}
+
 .grid-list {
     .grid-list-item .item-content {
         @include box-shadow(1);

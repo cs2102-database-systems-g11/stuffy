@@ -3,6 +3,7 @@
     <body>
         <?php include('header.php') ?>
         <div class='content'>
+            <?php include('./partials/search_bar.php'); ?>
             <?php include('./partials/item_list.php'); ?>
         </div>
     </body>
