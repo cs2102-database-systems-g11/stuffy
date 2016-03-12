@@ -12,8 +12,8 @@
         <div class='content'>
             <?php
                 if (isset($_POST['search-submit'])) {
-                    $query = '%' . $_POST['search-query'] . '%';
-                    $params = array($query);
+                    $search_query = '%' . $_POST['search-query'] . '%';
+                    $params = array($search_query);
                     $query = "SELECT u.username, a.owner, a.item_name, a.bid_deadline 
                         FROM advertise_item a, users u
                         WHERE 
