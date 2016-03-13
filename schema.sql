@@ -38,7 +38,7 @@ CREATE TABLE advertise_item (
     item_name character varying(128) NOT NULL,
     type character varying(9) NOT NULL,
     description character varying(1024),
-    starting_bid integer,
+    starting_bid integer DEFAULT 0,
     bid_deadline date NOT NULL,
     buyout integer,
     available_quantity integer DEFAULT 1,
@@ -59,7 +59,7 @@ CREATE TABLE bid (
     owner character varying(128) NOT NULL,
     item_name character varying(128) NOT NULL,
     bid integer NOT NULL,
-    bidder character varying(128),
+    bidder character varying(128) NOT NULL,
     created date NOT NULL
 );
 

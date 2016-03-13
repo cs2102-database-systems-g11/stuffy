@@ -6,7 +6,7 @@
             $owner = $row['owner'];
             $item_name = $row['item_name'];
             $owner_username = $row['username'];
-            $item_url = '/item.php?user=' . $owner_username. '&name=' . $item_name;
+            $item_url = '/item.php?user=' . $owner . '&name=' . $item_name;
 
             $params = array($owner, $item_name);
             $query = "SELECT MAX(bid) AS bid FROM bid WHERE owner = $1 AND item_name = $2;";
@@ -20,7 +20,7 @@
         ?>
         <div class='grid-list-item col-sm-4'>
             <div class="thumbnail item-content">
-                <a href='#'><img src="http://placehold.it/300x200" alt="..."></a>
+                <a href='<?php echo $item_url ?>'><img src="http://placehold.it/300x200" alt="..."></a>
                 <div class="caption">
                     <h4 class='title'>
                         <a href='<?php echo $item_url ?>'><?php echo $item_name?></a>

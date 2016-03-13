@@ -21,7 +21,7 @@ CREATE TABLE advertise_item (
  item_name VARCHAR(128) NOT NULL,
  type VARCHAR(9) NOT NULL,
  description VARCHAR(1024),
- starting_bid INT,
+ starting_bid INT DEFAULT 0,
  bid_deadline DATE NOT NULL,
  buyout INT,
  available_quantity INT DEFAULT 1,
@@ -38,7 +38,7 @@ CREATE TABLE bid (
  owner VARCHAR(128),
  item_name VARCHAR(128),
  bid INT NOT NULL,
- bidder VARCHAR(128),
+ bidder VARCHAR(128) NOT NULL,
  created DATE NOT NULL,
  PRIMARY KEY(owner, item_name, bid),
  FOREIGN KEY(owner, item_name) REFERENCES advertise_item(owner, item_name) on update cascade on delete cascade
