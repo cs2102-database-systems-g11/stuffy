@@ -42,14 +42,18 @@
             $exists = false;
         }
 		
-		$query = "SELECT MAX(bid) AS bid, bidder, created FROM bid WHERE owner = $1 AND item_name = $2 GROUP BY bidder, created;";
+		$query = "SELECT MAX(bid) AS bid FROM bid WHERE owner = $1 AND item_name = $2;";
 		$result = pg_query_params($dbconn, $query, $params) or die("Query failed: " . pg_last_error());
 		$row = pg_fetch_array($result);
-		$highest_bid = $row['bid'] == '' ? 'None' : '$' . $row['bid'];
+		$highest_bid = $row['bid'];
+		
+		$params = array($owner, $item_name, $highest_bid);
+		$query = "SELECT bidder, created FROM bid WHERE owner = $1 AND item_name = $2 AND bid = $3;";
+		$result = pg_query_params($dbconn, $query, $params) or die("Query failed: " . pg_last_error());
+		$row = pg_fetch_array($result);
 		$created = $row['created'];
 		$bidder = $row['bidder'];
-		
-		
+		$highest_bid = $highest_bid == '' ? 'None' : '$' . $highest_bid;
 		
 		$params = array($owner);
 		$query = "SELECT first_name, last_name FROM users WHERE email = $1;";
