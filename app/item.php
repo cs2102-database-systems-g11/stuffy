@@ -59,7 +59,20 @@
 		$query = "SELECT first_name, last_name FROM users WHERE email = $1;";
 		$result = pg_query_params($dbconn, $query, $params) or die("Query failed: " . pg_last_error());
 		$row = pg_fetch_array($result);
-		$owner_name = $row['first_name'] . ' ' . $row['last_name'];
+
+        $params = array($owner);
+        $query = 'SELECT username from users where email = $1';
+		$result = pg_query_params($dbconn, $query, $params) or die("Query failed: " . pg_last_error());
+        $username = '';
+        if (pg_num_rows($result) > 0) {
+            $username = pg_fetch_result($result, 0, 0);
+        }
+		$name = trim($row['first_name'] . ' ' . $row['last_name']);
+        if ($name) {
+            $name = $username . ' (' . $name . ')';
+        } else {
+            $name = $username;
+        }
     ?>
 
     <body>
@@ -72,61 +85,57 @@
                 <div class="panel-body">
                     <div class="form-horizontal item-info">
 						<div class="form-group">
-							<div class="col-sm-18 form-group-content" align='center'>
-								<img src="http://placehold.it/300x200" alt="...">
+							<div class="col-sm-4 form-group-content" align='center'>
+                                <a href="#" class="thumbnail">
+                                    <img src="http://placehold.it/300x200" alt="...">
+                                </a>
 							</div>
+                            <div class="col-sm-8">
+                                <div class="form-group">
+                                    <label for="item_name" class="control-label">Item Name: </label>
+                                    <div class="form-group-content">
+                                        <?php echo $item_name ?>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="owner_name" class="">User: </label>
+                                    <div class="form-group-content"><?php echo $name ?></div>
+                                </div>
+                            </div>
 						</div>
 						<div class="form-group">
-                            <label for="item_name" class="col-sm-3 control-label">Item Name: </label>
-                            <div class="col-sm-15 form-group-content">
-                                <?php echo $item_name ?>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="owner_name" class="col-sm-3 control-label">Owned by: </label>
-                            <div class="col-sm-15 form-group-content">
-                                <?php echo $owner_name ?>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="email" class="col-sm-3 control-label">Email: </label>
-                            <div class="col-sm-15 form-group-content">
-                                <?php echo $owner ?>
-                            </div>
-                        </div>
-						<div class="form-group">
                             <label for="type" class="col-sm-3 control-label">Type: </label>
-                            <div class="col-sm-15 form-group-content">
+                            <div class="col-sm-9 form-group-content">
                                 <?php echo $type ?>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="description" class="col-sm-3 control-label">Description: </label>
-                            <div class="col-sm-15 form-group-content">
+                            <div class="col-sm-9 form-group-content">
                                 <?php echo $description ?>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="quantity" class="col-sm-3 control-label">Quantity: </label>
-                            <div class="col-sm-15 form-group-content">
+                            <div class="col-sm-9 form-group-content">
                                 <?php echo $quantity ?>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="pickup_location" class="col-sm-3 control-label">Pickup Location: </label>
-                            <div class="col-sm-15 form-group-content">
+                            <div class="col-sm-9 form-group-content">
                                 <?php echo $pickup_location ?>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="return_location" class="col-sm-3 control-label">Return Location: </label>
-                            <div class="col-sm-15 form-group-content">
+                            <div class="col-sm-9 form-group-content">
                                 <?php echo $return_location ?>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="return-date" class="col-sm-3 control-label">Return Date: </label>
-                            <div class="col-sm-15 form-group-content">
+                            <div class="col-sm-9 form-group-content">
                                 <?php echo $return_date ?>
                             </div>
                         </div>						
@@ -147,13 +156,13 @@
 					<div class="form-horizontal item-info">
 					    <div class="form-group">
                             <label for="starting_bid" class="col-sm-3 control-label">Starting Bid: </label>
-                            <div class="col-sm-15 form-group-content">
+                            <div class="col-sm-9 form-group-content">
                                 <?php echo $starting_bid ?>
                             </div>
                         </div>
                         <div class="form-group">
 							<label for="highest_bid" class="col-sm-3 control-label">Highest Bid: </label>
-                            <div class="col-sm-15 form-group-content">
+                            <div class="col-sm-9 form-group-content">
                                 <?php echo $highest_bid; 
 									if ($highest_bid != 'None') {
 								?>
@@ -170,13 +179,13 @@
                         </div>
 	                    <div class="form-group">
                             <label for="buyout" class="col-sm-3 control-label">Buyout: </label>
-                            <div class="col-sm-15 form-group-content">
+                            <div class="col-sm-9 form-group-content">
                                 <?php echo $buyout ?>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="bid_deadline" class="col-sm-3 control-label">Bid Deadline: </label>
-                            <div class="col-sm-15 form-group-content">
+                            <div class="col-sm-9 form-group-content">
                                 <?php echo $bid_deadline ?>
                             </div>
                         </div>
