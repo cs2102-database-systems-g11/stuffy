@@ -1,7 +1,7 @@
 .content {
     max-width: $content-width;
     margin: auto;
-    padding: 0px $spacing-unit/2;
+    padding: 0px $spacing-unit/2 $spacing-unit $spacing-unit/2;
 }
 
 .navbar {
@@ -66,6 +66,10 @@
             }
         }
     }
+}
+
+.pagination-nav {
+    text-align: center;
 }
 
 .margin-bottom-20 {

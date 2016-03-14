@@ -1,4 +1,4 @@
-<form method='post' class="container-fluid search-bar panel panel-default">
+<form class="container-fluid search-bar panel panel-default">
     <div class='panel-body'>
         <div class='main-search-wrapper'>
             <div class="input-group main-search">
