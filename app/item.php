@@ -21,7 +21,7 @@
 		$return_date = '';
 		$exists = true;
 		
-		$params = array($_GET['user'], $_GET['name']);
+		$params = array($_GET['user'], urldecode($_GET['name']));
 		$query = "SELECT * FROM advertise_item WHERE owner = $1 AND item_name = $2;";
 		$result = pg_query_params($dbconn, $query, $params) or die("Query failed: " . pg_last_error());
 		
