@@ -41,7 +41,8 @@ CREATE TABLE bid (
  bidder VARCHAR(128) NOT NULL,
  created DATE NOT NULL,
  PRIMARY KEY(owner, item_name, bid),
- FOREIGN KEY(owner, item_name) REFERENCES advertise_item(owner, item_name) on update cascade on delete cascade
+ FOREIGN KEY(owner, item_name) REFERENCES advertise_item(owner, item_name) on update cascade on delete cascade,
+ FOREIGN KEY(bidder) REFERENCES users(email) on update cascade on delete cascade
 );
 
 CREATE VIEW borrow AS

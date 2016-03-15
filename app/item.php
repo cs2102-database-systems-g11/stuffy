@@ -21,7 +21,13 @@
 		$return_date = '';
 		$exists = true;
 		
-		$params = array($_GET['user'], urldecode($_GET['name']));
+		$params = array($_GET['user']);
+		$query = "SELECT email FROM users WHERE username = $1;";
+		$result = pg_query_params($dbconn, $query, $params) or die("Query failed: " . pg_last_error());
+		$row = pg_fetch_array($result);
+		$owner = $row['email'];
+		
+		$params = array($owner, urldecode($_GET['name']));
 		$query = "SELECT * FROM advertise_item WHERE owner = $1 AND item_name = $2;";
 		$result = pg_query_params($dbconn, $query, $params) or die("Query failed: " . pg_last_error());
 		
@@ -55,14 +61,25 @@
 		$bidder = $row['bidder'];
 		$highest_bid = $highest_bid == '' ? 'None' : '$' . $highest_bid;
 		
-		$params = array($owner);
-		$query = "SELECT first_name, last_name FROM users WHERE email = $1;";
+		$params = array($bidder);
+		$query = 'SELECT username, first_name, last_name FROM users where email = $1';
 		$result = pg_query_params($dbconn, $query, $params) or die("Query failed: " . pg_last_error());
 		$row = pg_fetch_array($result);
+        $username = '';
+        if (pg_num_rows($result) > 0) {
+            $username = pg_fetch_result($result, 0, 0);
+        }
+		$bidder = trim($row['first_name'] . ' ' . $row['last_name']);
+        if ($bidder) {
+            $bidder = $username . ' (' . $bidder . ')';
+        } else {
+            $bidder = $username;
+        }
 
         $params = array($owner);
-        $query = 'SELECT username from users where email = $1';
+        $query = 'SELECT username, first_name, last_name FROM users where email = $1';
 		$result = pg_query_params($dbconn, $query, $params) or die("Query failed: " . pg_last_error());
+		$row = pg_fetch_array($result);
         $username = '';
         if (pg_num_rows($result) > 0) {
             $username = pg_fetch_result($result, 0, 0);

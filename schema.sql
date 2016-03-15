@@ -143,6 +143,14 @@ ALTER TABLE ONLY advertise_item
 
 
 --
+-- Name: bid_bidder_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY bid
+    ADD CONSTRAINT bid_bidder_fkey FOREIGN KEY (bidder) REFERENCES users(email) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
 -- Name: bid_owner_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
