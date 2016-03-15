@@ -27,7 +27,7 @@
 		$row = pg_fetch_array($result);
 		$owner = $row['email'];
 		
-		$params = array($owner, urldecode($_GET['name']));
+		$params = array($owner, rawurldecode($_GET['name']));
 		$query = "SELECT * FROM advertise_item WHERE owner = $1 AND item_name = $2;";
 		$result = pg_query_params($dbconn, $query, $params) or die("Query failed: " . pg_last_error());
 		

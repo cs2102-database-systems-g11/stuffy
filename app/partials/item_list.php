@@ -6,7 +6,7 @@
             $owner = $row['owner'];
             $item_name = $row['item_name'];
             $owner_username = $row['username'];
-            $item_url = '/item.php?user=' . $owner_username . '&name=' . urlencode($item_name);
+            $item_url = '/item.php?user=' . $owner_username . '&name=' . rawurlencode($item_name);
 
             $params = array($owner, $item_name);
             $query = "SELECT MAX(bid) AS bid FROM bid WHERE owner = $1 AND item_name = $2;";
