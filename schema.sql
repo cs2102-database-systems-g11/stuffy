@@ -60,7 +60,7 @@ CREATE TABLE bid (
     item_name character varying(128) NOT NULL,
     bid integer NOT NULL,
     bidder character varying(128) NOT NULL,
-    created date NOT NULL
+    created timestamp without time zone NOT NULL
 );
 
 
