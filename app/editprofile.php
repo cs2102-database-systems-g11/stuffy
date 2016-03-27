@@ -1,5 +1,5 @@
 <?php 
-    include('/functions.php');
+    include('./functions.php');
     redirect_if_unauthed();
 ?>
 <html>
