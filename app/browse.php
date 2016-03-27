@@ -1,4 +1,4 @@
-<?php include('/functions.php'); ?>
+<?php include('./functions.php'); ?>
 <?php
     $dbPassword = getenv("DB_PASSWORD");
     $dbconn = pg_connect("host=localhost port=5432 dbname=stuffy_db user=postgres
