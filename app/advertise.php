@@ -61,7 +61,7 @@
                         </div>
                         <div class="form-group">
                             <label for="bid-deadline" class="control-label">Bid Deadline</label>
-                            <input type="text" name='bid-deadline' class="form-control" value='' placeholder="Bid Deadline (YYYY-MM-DD)">
+                            <input type="date" name='bid-deadline' class="form-control" value='' placeholder="Bid Deadline (YYYY-MM-DD)">
                         </div>
 
                         <hr>
@@ -80,7 +80,7 @@
                         </div>
                         <div class="form-group">
                             <label for="return-date" class="control-label">Return Date</label>
-                            <input type="text" name='return-date' class="form-control" value='' placeholder="Return Date (YYYY-MM-DD)">
+                            <input type="date" name='return-date' class="form-control" value='' placeholder="Return Date (YYYY-MM-DD)">
                         </div>
                         <button class="btn btn-default" name='create-advertisement-submit' type="submit">Create Advertisement</button>
                     </form>
