@@ -18,12 +18,46 @@
                     $offset = $limit * ($page - 1);
                 }
                 if (isset($_GET['search-submit'])) {
+                    $paramCount = 1;
                     $search_query = '%' . $_GET['search-query'] . '%';
                     $params = array($search_query);
+                    $filter = "(a.item_name LIKE $".$paramCount." or a.description LIKE $".$paramCount.")";
+
+                    // buyout filter
+                    if (isset($_GET['max-buyout']) && $_GET['max-buyout'] != '' && is_numeric($_GET['max-buyout'])) {
+                        $paramCount += 1;
+                        $maxBuyout = intval($_GET['max-buyout']);
+                        array_push($params, $maxBuyout);
+                        $filter = $filter . " and a.buyout <= $".$paramCount;
+                    }
+
+                    // location filter
+                    $location = '%' . $_GET['location'] . '%';
+                    array_push($params, $location);
+                    $paramCount += 1;
+                    $filter = $filter . " and (a.pickup_location LIKE $".$paramCount." or a.return_location LIKE $".$paramCount.")";
+
+                    // quantity filter
+                    if (isset($_GET['min-quantity']) && $_GET['min-quantity'] != '' && is_numeric($_GET['min-quantity'])) {
+                        $paramCount += 1;
+                        $minQuantity = intval($_GET['min-quantity']);
+                        array_push($params, $minQuantity);
+                        $filter = $filter . " and a.available_quantity >= $".$paramCount;
+                    }
+
+                    // type filter 
+                    if (isset($_GET['type']) && $_GET['type'] != '' && $_GET['type'] != 'All') {
+                        $paramCount += 1;
+                        $type = $_GET['type'];
+                        array_push($params, $type);
+                        $filter = $filter . " and a.type = $".$paramCount;
+                    }
+
+                    // get row count for pagination
                     $query = "SELECT u.username, a.owner, a.item_name, a.bid_deadline 
                         FROM advertise_item a, users u
                         WHERE 
-                        (a.item_name LIKE $1 OR a.description LIKE $1)
+                        (" . $filter . ")
                         AND a.bid_deadline > NOW() 
                         AND a.owner = u.email;";
                     $result = pg_query_params($dbconn, $query, $params);
@@ -32,16 +66,20 @@
                     } else {
                         $totalRows = pg_fetch_result($result, 0, 0);
                     }
+
+                    // get search results
+                    $paramCount += 2;
                     array_push($params, $limit, $offset);
                     $query = "SELECT u.username, a.owner, a.item_name, a.bid_deadline 
                         FROM advertise_item a, users u
                         WHERE 
-                        (a.item_name LIKE $1 OR a.description LIKE $1)
+                        (" . $filter . ")
                         AND a.bid_deadline > NOW() 
                         AND a.owner = u.email
                         ORDER BY a.bid_deadline
-                        LIMIT $2
-                        OFFSET $3;";
+                        LIMIT $" . ($paramCount - 1) . "
+                        OFFSET $" . $paramCount . ";";
+
                     $searchResults = pg_query_params($dbconn, $query, $params) or die("Query failed: " . pg_last_error());
                 } else {
                     $params = array($limit, $offset);
