@@ -16,7 +16,6 @@
             }
             for($i=0;$i<$var;$i++){
 
-                $num_bids = $resultsArray[$numRows-$i-1]['num_bids'];
                 $owner = $resultsArray[$numRows-$i-1]['owner'];
                 $item_name = $resultsArray[$numRows-$i-1]['item_name'];
                 $owner_username = $resultsArray[$numRows-$i-1]['username'];
