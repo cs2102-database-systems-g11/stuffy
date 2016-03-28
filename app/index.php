@@ -34,9 +34,9 @@
 
                 		$result = pg_query($dbconn, $query) or die('Query failed: '.pg_last_error());
                 		$row = pg_fetch_array($result);
-                		$num_users = $row[num_users];
-                		$num_items = $row[num_items];
-                		$num_bids = $row[num_bids];
+                		$num_users = $row['num_users'];
+                		$num_items = $row['num_items'];
+                		$num_bids = $row['num_bids'];
                 	?>
                 	<div class="stats">
                 		<div class="stats-content">
