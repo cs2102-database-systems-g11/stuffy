@@ -8,6 +8,11 @@
         or die('Could not connect: ' . pg_last_error());
     ?>
 	<?php
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        $loggedInUsername = $_SESSION['username'];
+
         $owner = '';
         $item_name = '';
         $type = '';
@@ -20,7 +25,14 @@
 		$return_location = '';
 		$return_date = '';
 		$exists = true;
-		
+
+        // get email of logged in user
+        $params = array($loggedInUsername);
+		$query = "SELECT email FROM users WHERE username = $1;";
+		$result = pg_query_params($dbconn, $query, $params) or die("Query failed: " . pg_last_error());
+		$row = pg_fetch_array($result);
+        $loggedInUser = $row['email'];
+
 		$params = array($_GET['user']);
 		$query = "SELECT email FROM users WHERE username = $1;";
 		$result = pg_query_params($dbconn, $query, $params) or die("Query failed: " . pg_last_error());
@@ -59,6 +71,7 @@
 		$row = pg_fetch_array($result);
 		$created = $row['created'];
 		$bidder = $row['bidder'];
+        $highest_bid_int = $highest_bid;
 		$highest_bid = $highest_bid == '' ? 'None' : '$' . $highest_bid;
 		
 		$params = array($bidder);
@@ -89,6 +102,22 @@
             $name = $username . ' (' . $name . ')';
         } else {
             $name = $username;
+        }
+    ?>
+
+    <?php 
+        if(isset($_POST['new-bid-submit'])) {
+            $newBid = $_POST["new-bid"];
+            if (intval($newBid) <= $highest_bid_int) {
+                create_notification('danger', 'New bid must be higher than the previous highest bid');
+            } else {
+                $params = array($owner, $item_name, $_POST["new-bid"], $loggedInUser);
+                $query = 'INSERT INTO bid values ($1, $2, $3, $4, now())';
+                $result = pg_query_params($dbconn, $query, $params) or die("Query failed: " . pg_last_error());
+                if ($result) {
+                    create_notification('success', 'Bid created');
+                }
+            }
         }
     ?>
 
@@ -165,6 +194,22 @@
                     create_notification('danger', 'Item does not exist.');
                 }
             ?>
+			<div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">New Bid</h3>
+                </div>
+				<div class="panel-body">
+                    <form method='post' class="form-horizontal new-bid-panel">
+                        <div class="form-group">
+                            <label for="new-bid" class="col-sm-2 control-label">Bid: </label>
+                            <div class="col-sm-10">
+                            <input type="number" name='new-bid' class="form-control" id="input-new-bid" min='<?php echo $highest_bid_int + 1 ?>' value='<?php echo $highest_bid_int + 1 ?>' placeholder="New bid">
+                            </div>
+                        </div>
+                        <button class="btn btn-default" name='new-bid-submit' type="submit">Bid for item</button>
+                    </form>
+                </div>
+            </div>
 			<div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">Bidding Information</h3>
