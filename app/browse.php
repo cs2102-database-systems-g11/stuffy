@@ -19,12 +19,13 @@
                 }
                 if (isset($_GET['search-submit'])) {
                     $paramCount = 1;
-                    $search_query = '%' . $_GET['search-query'] . '%';
+                    $search_query = '%' . strtolower($_GET['search-query']) . '%';
                     $params = array($search_query);
-                    $filter = "(a.item_name LIKE $".$paramCount." or a.description LIKE $".$paramCount.")";
+                    $filter = "(lower(a.item_name) LIKE $".$paramCount." or lower(a.description) LIKE $".$paramCount.")";
 
                     // buyout filter
-                    if (isset($_GET['max-buyout']) && $_GET['max-buyout'] != '' && is_numeric($_GET['max-buyout'])) {
+                    if (isset($_GET['max-buyout']) && $_GET['max-buyout'] != '' && is_numeric($_GET['max-buyout'])
+                        && $_GET['max-buyout'] > 0) {
                         $paramCount += 1;
                         $maxBuyout = intval($_GET['max-buyout']);
                         array_push($params, $maxBuyout);
@@ -32,10 +33,10 @@
                     }
 
                     // location filter
-                    $location = '%' . $_GET['location'] . '%';
+                    $location = '%' . strtolower($_GET['location']) . '%';
                     array_push($params, $location);
                     $paramCount += 1;
-                    $filter = $filter . " and (a.pickup_location LIKE $".$paramCount." or a.return_location LIKE $".$paramCount.")";
+                    $filter = $filter . " and (lower(a.pickup_location) LIKE $".$paramCount." or lower(a.return_location) LIKE $".$paramCount.")";
 
                     // quantity filter
                     if (isset($_GET['min-quantity']) && $_GET['min-quantity'] != '' && is_numeric($_GET['min-quantity'])) {
