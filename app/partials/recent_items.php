@@ -16,10 +16,10 @@
             }
             for($i=0;$i<$var;$i++){
 
-                $num_bids = $resultsArray[$numRows-$i-1][num_bids];
-                $owner = $resultsArray[$numRows-$i-1][owner];
-                $item_name = $resultsArray[$numRows-$i-1][item_name];
-                $owner_username = $resultsArray[$numRows-$i-1][username];
+                $num_bids = $resultsArray[$numRows-$i-1]['num_bids'];
+                $owner = $resultsArray[$numRows-$i-1]['owner'];
+                $item_name = $resultsArray[$numRows-$i-1]['item_name'];
+                $owner_username = $resultsArray[$numRows-$i-1]['username'];
                 $item_url = '/item.php?user=' . $owner_username . '&name=' . rawurlencode($item_name);
 
         ?>

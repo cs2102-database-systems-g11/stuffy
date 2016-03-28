@@ -14,10 +14,10 @@
             $rowCount = 0;
             for($i=0;$i<pg_num_rows($result);$i++){
                 $row = pg_fetch_array($result);
-                $num_bids = $row[num_bids];
-                $owner = $row[owner];
-                $item_name = $row[item_name];
-                $owner_username = $row[username];
+                $num_bids = $row['num_bids'];
+                $owner = $row['owner'];
+                $item_name = $row['item_name'];
+                $owner_username = $row['username'];
                 $item_url = '/item.php?user=' . $owner_username . '&name=' . rawurlencode($item_name);
 
         ?>
