@@ -83,7 +83,6 @@
                                 </span>
                             </div>
                         </div>
-                        
                         <button class="btn btn-default" name='create-advertisement-submit' type="submit">Create Advertisement</button>
                     </form>
                 </div>
