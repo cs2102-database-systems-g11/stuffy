@@ -51,7 +51,8 @@
             $description = $row['description'] == '' ? 'None' : $row['description'];
 			$starting_bid = '$' . $row['starting_bid'];
 			$bid_deadline = $row['bid_deadline'];
-			$buyout = $row['buyout'] == NULL ? 'None' : '$' . $row['buyout'];
+            $buyout_int = $row['buyout'];
+			$buyout = $buyout_int == NULL ? 'None' : '$' . $buyout_int;
 			$quantity = $row['available_quantity'];
 			$pickup_location = $row['pickup_location'] == '' ? 'None' : $row['pickup_location'];
 			$return_location = $row['return_location'] == '' ? 'None' : $row['return_location'];
@@ -106,12 +107,18 @@
     ?>
 
     <?php 
-        if(isset($_POST['new-bid-submit'])) {
-            $newBid = $_POST["new-bid"];
-            if (intval($newBid) <= $highest_bid_int) {
-                create_notification('danger', 'New bid must be higher than the previous highest bid');
+        if(isset($_POST['new-bid-submit']) || isset($_POST['buyout-submit'])) {
+            if (isset($_POST['buyout-submit'])) {
+                $newBid = $buyout_int;
             } else {
-                $params = array($owner, $item_name, $_POST["new-bid"], $loggedInUser);
+                $newBid = intval($_POST["new-bid"]);
+            }
+            if ($newBid <= $highest_bid_int) {
+                create_notification('danger', 'New bid must be higher than the previous highest bid');
+            } else if ($newBid > $buyout_int) {
+                create_notification('danger', 'Cannot bid more than the buyout price. Consider using the buyout option.');
+            } else {
+                $params = array($owner, $item_name, $newBid, $loggedInUser);
                 $query = 'INSERT INTO bid values ($1, $2, $3, $4, now())';
                 $result = pg_query_params($dbconn, $query, $params) or die("Query failed: " . pg_last_error());
                 if ($result) {
@@ -194,6 +201,8 @@
                     create_notification('danger', 'Item does not exist.');
                 }
             ?>
+
+            <?php if ($highest_bid_int != $buyout_int) { ?>
 			<div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">New Bid</h3>
@@ -207,9 +216,12 @@
                             </div>
                         </div>
                         <button class="btn btn-default" name='new-bid-submit' type="submit">Bid for item</button>
+                        <button class="btn btn-default" name='buyout-submit' type="submit">Buyout</button>
                     </form>
                 </div>
             </div>
+            <?php } ?>
+
 			<div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">Bidding Information</h3>
