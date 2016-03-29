@@ -8,6 +8,7 @@ $dbconn = pg_connect("host=localhost port=5432 dbname=stuffy_db user=postgres
 or die('Could not connect: ' . pg_last_error());
 ?>
 <?php
+session_start();
 $owner = '';
 $item_name = '';
 $type = '';
@@ -211,7 +212,19 @@ if ($name) {
 </div>
 </div>
 
-<div class="panel panel-default">
+<?php 
+$show = '';
+if (isset($_SESSION['username'])){
+    echo "<p><i>You are logged in as ".
+    $_SESSION['username'] . "</i></p>";
+    $show = "display:show";
+} else {
+    echo "<p>You are not logged in.
+    Please login <a href='./login.php'>here</a> to place your bid.</p>";
+    $show = "display:none";
+}
+?>
+<div class="panel panel-default" style = <?php echo $show ?>>
     <div class="panel-heading">
         <h3 class="panel-title">Place Your Bid</h3>
     </div>
