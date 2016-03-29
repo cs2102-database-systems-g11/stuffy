@@ -234,7 +234,9 @@ if ($name) {
                         <input type="hidden" name = "buyout" value = "<?php echo $buyout_int ?>">
                     </div>
                     <button class="btn btn-default" name='bid-submit' type="submit">Submit</button>
+                    <?php if ($buyout_int > 0) { ?>
                     <button class="btn btn-default" name='buyout-submit' type="submit">Buyout</button>
+                    <?php } ?>
                 </form>
             </div>
         </div>

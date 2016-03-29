@@ -15,6 +15,7 @@ $itemName = '';
 $timestamp = '';
 $username = '';
 $exists = true;
+$message = 'Bid successfully placed.';
 
 if (isset($_GET['user'])) {
 	$username = $_GET['user'];
@@ -27,6 +28,7 @@ if (isset($_GET['user'])) {
 
 if (isset($_POST['buyout-submit'])) {
     $newBid = $_POST['buyout'];
+    $message = 'Successfully borrowed item!';
 } else {
     $newBid = $_POST['newBid'];
 }
@@ -61,9 +63,9 @@ if (!$result) {
 				<h3 class="panel-title">Successful</h3>
 			</div>
 			<div class="panel-body">
-				<p> Your bid is successfully placed</p>
-				<a href="./index.php" class="btn btn-primary" role="button">Get Home</a>
-				<a href=<?php echo $_POST['url'] ?> class="btn btn-success" role="button">Get Back</a>
+            <p><?php echo $message ?></p>
+				<a href="./index.php" class="btn btn-primary" role="button">Home</a>
+				<a href=<?php echo $_POST['url'] ?> class="btn btn-success" role="button">Back</a>
 			</div>
 		</div>
 	</div>
