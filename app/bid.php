@@ -25,6 +25,12 @@ if (isset($_GET['user'])) {
 	$username = $_SESSION['username'];
 }
 
+if (isset($_POST['buyout-submit'])) {
+    $newBid = $_POST['buyout'];
+} else {
+    $newBid = $_POST['newBid'];
+}
+
 $params = array($username);
 $query = "SELECT * FROM users WHERE username = $1;";
 $result = pg_query_params($dbconn, $query, $params) or die("Query failed: " . pg_last_error());
@@ -35,7 +41,7 @@ if (pg_num_rows($result) > 0) {
 	$exists = false;
 }
 
-$params = array($_POST['owner'], $_POST["itemName"], $_POST["newBid"], $bidderEmail, date("Y-m-d h:i:s"));
+$params = array($_POST['owner'], $_POST["itemName"], $newBid, $bidderEmail, date("Y-m-d h:i:s"));
 $query = "INSERT INTO bid VALUES ($1, $2, $3, $4, $5)";
 $result = pg_query_params($dbconn, $query, $params);
 

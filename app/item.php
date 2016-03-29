@@ -181,18 +181,18 @@ if ($name) {
                     <div class="form-group">
                         <label for="highest_bid" class="col-sm-3 control-label">Highest Bid: </label>
                         <div class="col-sm-9 form-group-content">
-                            <?php echo $highest_bid; 
-                             if ($highest_bid != 'None') {
-                             ?>
+                        <?php echo $highest_bid; 
+                        if ($highest_bid != 'None') {
+                        ?>
                              <label for="bidder">BY </label>
-                             <?php echo $bidder;
-                                    };
-                                    if ($highest_bid != 'None') {
-                                    ?>
-                                    <label for="created">ON </label>
-                                    <?php echo $created;
-                                           };
-                                           ?>
+                        <?php echo $bidder;
+                        };
+                        if ($highest_bid != 'None') {
+                        ?>
+                            <label for="created">ON </label>
+                        <?php echo $created;
+                        };
+                        ?>
                         </div>
                     </div>
                     <div class="form-group">
@@ -224,15 +224,17 @@ if ($name) {
                 <h3 class="panel-title">Place Your Bid</h3>
             </div>
             <div class="panel-body">
-                <form namd = "bidForm" action="bid.php" method="post">
+                <form name = "bidForm" action="bid.php" method="post">
                     <div class="form-group">
                         <label for="pickup-location" class="control-label">Your Bid</label>
-                        <input type="number" name='newBid' class="form-control" min = "<?php echo $next_highest_bid2 ?>" <?php echo $maxAttr ?> autofocus required> 
+                        <input type="number" name='newBid' class="form-control" min = "<?php echo $next_highest_bid2 ?>" value="<?php echo $next_highest_bid2 ?>" <?php echo $maxAttr ?> autofocus required> 
                         <input type="hidden" name = "owner" value = "<?php echo $owner ?>">
                         <input type="hidden" name = "itemName" value = "<?php echo $item_name ?>">
                         <input type="hidden" name = "url" value = "<?php echo $_SERVER['REQUEST_URI'] ?>">
+                        <input type="hidden" name = "buyout" value = "<?php echo $buyout_int ?>">
                     </div>
                     <button class="btn btn-default" name='bid-submit' type="submit">Submit</button>
+                    <button class="btn btn-default" name='buyout-submit' type="submit">Buyout</button>
                 </form>
             </div>
         </div>
