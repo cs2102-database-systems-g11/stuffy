@@ -28,7 +28,6 @@ CREATE TABLE advertise_item (
  pickup_location VARCHAR(512),
  return_location VARCHAR(512),
  return_date DATE NOT NULL,
- UNIQUE (owner, item_name),
  PRIMARY KEY(owner, item_name),
  FOREIGN KEY(owner) REFERENCES users(email) on delete cascade on update cascade,
  CHECK (type in ('Tool', 'Appliance', 'Furniture', 'Book', 'Others'))
