@@ -211,6 +211,13 @@ if ($name) {
             </div>
         </div>
 
+        <?php
+            $maxAttr = '';
+            if ($buyout_int > 0) {
+                $maxAttr = 'max=\'' . ($buyout_int - 1) . '\'';
+            }
+        ?>
+
         <?php if ($buyout_int != $highest_bid_int && isset($_SESSION['username']) && strtotime($bid_deadline) > time()) { ?>
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -220,7 +227,7 @@ if ($name) {
                 <form namd = "bidForm" action="bid.php" method="post">
                     <div class="form-group">
                         <label for="pickup-location" class="control-label">Your Bid</label>
-                        <input type="number" name='newBid' class="form-control" min = "<?php echo $next_highest_bid2 ?>" autofocus required> 
+                        <input type="number" name='newBid' class="form-control" min = "<?php echo $next_highest_bid2 ?>" <?php echo $maxAttr ?> autofocus required> 
                         <input type="hidden" name = "owner" value = "<?php echo $owner ?>">
                         <input type="hidden" name = "itemName" value = "<?php echo $item_name ?>">
                         <input type="hidden" name = "url" value = "<?php echo $_SERVER['REQUEST_URI'] ?>">
