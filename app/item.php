@@ -24,12 +24,22 @@ $pickup_location = '';
 $return_location = '';
 $return_date = '';
 $exists = true;
+$user = '';
 
 $params = array($_GET['user']);
 $query = "SELECT email FROM users WHERE username = $1;";
 $result = pg_query_params($dbconn, $query, $params) or die("Query failed: " . pg_last_error());
 $row = pg_fetch_array($result);
 $owner = $row['email'];
+
+if(isset($_SESSION['username'])){
+    $params = array($_SESSION['username']);
+    $query = "SELECT email FROM users WHERE username = $1;";
+    $result = pg_query_params($dbconn, $query, $params) or die("Query failed: " . pg_last_error());
+    $row = pg_fetch_array($result);
+    $user = $row['email'];
+}
+
 
 $params = array($owner, rawurldecode($_GET['name']));
 $query = "SELECT * FROM advertise_item WHERE owner = $1 AND item_name = $2;";
@@ -82,6 +92,8 @@ if ($bidder) {
 } else {
     $bidder = $username;
 }
+
+
 
 $params = array($owner);
 $query = 'SELECT username, first_name, last_name FROM users where email = $1';
@@ -218,7 +230,8 @@ if ($name) {
             }
         ?>
 
-        <?php if ($buyout_int != $highest_bid_int && isset($_SESSION['username']) && strtotime($bid_deadline) > time()) { ?>
+        <?php 
+        if ($buyout_int != $highest_bid_int && isset($_SESSION['username']) && strtotime($bid_deadline) > time() && $user <> $owner) { ?>
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">Place Your Bid</h3>
@@ -240,6 +253,15 @@ if ($name) {
                 </form>
             </div>
         </div>
+        <?php } ?>
+        <?php if ($user == $owner) { ?>
+            <div class="panel-body">
+                <form name = "deleteForm" action="delete.php" method="post">
+                        <input type="hidden" name = "owner" value = "<?php echo $owner ?>">
+                        <input type="hidden" name = "itemName" value = "<?php echo $item_name ?>">
+                    <button class="btn btn-warning" name='delete-submit' type="submit">Delete</button>                    
+                </form>
+            </div>
         <?php } ?>
     <?php 
     if (!$exists) {
