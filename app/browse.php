@@ -88,13 +88,15 @@
                         FROM advertise_item a, users u 
                         WHERE a.bid_deadline > NOW() 
                         AND a.owner = u.email 
+						AND NOT EXISTS (SELECT * FROM advertise_item a2, bid b WHERE b.owner = a2.owner AND b.item_name = a2.item_name AND b.bid = a2.buyout AND a.owner = a2.owner AND a.item_name = a2.item_name)
                         ORDER BY a.bid_deadline 
                         LIMIT $1
                         OFFSET $2;";
                     $searchResults = pg_query_params($dbconn, $query, $params) or die("Query failed: " . pg_last_error());
                     $query = "SELECT count(*)
-                        FROM advertise_item
-                        WHERE bid_deadline > NOW();";
+                        FROM advertise_item a
+                        WHERE a.bid_deadline > NOW()
+						AND NOT EXISTS (SELECT * FROM advertise_item a2, bid b WHERE b.owner = a2.owner AND b.item_name = a2.item_name AND b.bid = a2.buyout AND a.owner = a2.owner AND a.item_name = a2.item_name);";
                     $totalRows = pg_fetch_result(pg_query($dbconn, $query), 0, 0);
                 }
             ?>
