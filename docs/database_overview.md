@@ -48,13 +48,19 @@ CREATE VIEW borrow AS
  SELECT b.owner, b.item_name, b.bid, b.bidder
  FROM bid b
  WHERE EXISTS ( SELECT b_1.item_name, b_1.owner
- FROM advertise_item a, bid b_1
- WHERE a.owner = b_1.owner 
- AND a.item_name = b_1.item_name 
- AND a.bid_deadline < now() 
- AND b_1.bid >= a.starting_bid
- GROUP BY b_1.item_name, b_1.owner
- HAVING b.item_name = b_1.item_name 
- AND b.owner = b_1.owner
- AND b.bid = max(b_1.bid) );
+	FROM advertise_item a, bid b_1
+	WHERE a.owner = b_1.owner 
+	AND a.item_name = b_1.item_name 
+	AND b_1.bid >= a.starting_bid 
+	AND ((a.bid_deadline < now())
+	OR (EXISTS (SELECT 1 FROM advertise_item a2, bid b 
+				WHERE b.owner = a2.owner 
+				AND b.item_name = a2.item_name 
+				AND b.bid = a2.buyout 
+				AND a.owner = a2.owner 
+				AND a.item_name = a2.item_name)))
+	GROUP BY b_1.item_name, b_1.owner
+	HAVING b.item_name = b_1.item_name 
+	AND b.owner = b_1.owner
+	AND b.bid = max(b_1.bid) );
 ```

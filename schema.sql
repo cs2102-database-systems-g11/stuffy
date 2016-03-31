@@ -45,7 +45,7 @@ CREATE TABLE advertise_item (
     pickup_location character varying(512),
     return_location character varying(512),
     return_date date NOT NULL,
-    CONSTRAINT advertise_item_type_check CHECK (((type)::text = ANY ((ARRAY['Tool'::character varying, 'Appliance'::character varying, 'Furniture'::character varying, 'Book'::character varying, 'Others'::character varying])::text[])))
+    CONSTRAINT advertise_item_type_check CHECK (((type)::text = ANY (ARRAY[('Tool'::character varying)::text, ('Appliance'::character varying)::text, ('Furniture'::character varying)::text, ('Book'::character varying)::text, ('Others'::character varying)::text])))
 );
 
 
@@ -76,11 +76,13 @@ CREATE VIEW borrow AS
     b.bid,
     b.bidder
    FROM bid b
-  WHERE (EXISTS ( SELECT b_1.item_name,
-            b_1.owner
+  WHERE (EXISTS ( SELECT 1
            FROM advertise_item a,
             bid b_1
-          WHERE (((((a.owner)::text = (b_1.owner)::text) AND ((a.item_name)::text = (b_1.item_name)::text)) AND (a.bid_deadline < now())) AND (b_1.bid >= a.starting_bid))
+          WHERE (((((a.owner)::text = (b_1.owner)::text) AND ((a.item_name)::text = (b_1.item_name)::text)) AND (b_1.bid >= a.starting_bid)) AND ((a.bid_deadline < now()) OR (EXISTS ( SELECT 1
+                   FROM advertise_item a2,
+                    bid b_2
+                  WHERE ((((((b_2.owner)::text = (a2.owner)::text) AND ((b_2.item_name)::text = (a2.item_name)::text)) AND (b_2.bid = a2.buyout)) AND ((a.owner)::text = (a2.owner)::text)) AND ((a.item_name)::text = (a2.item_name)::text))))))
           GROUP BY b_1.item_name, b_1.owner
          HAVING ((((b.item_name)::text = (b_1.item_name)::text) AND ((b.owner)::text = (b_1.owner)::text)) AND (b.bid = max(b_1.bid)))));
 
