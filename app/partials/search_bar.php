@@ -1,19 +1,11 @@
 <?php
     $searchQuery = '';
-    $minBid = '';
-    $maxBid = '';
     $type = '';
     $minQuantity = '';
     $location = '';
 
     if (isset($_GET['search-query'])) {
         $searchQuery = htmlspecialchars($_GET['search-query']);
-    }
-    if (isset($_GET['min-bid'])) {
-        $minBid = htmlspecialchars($_GET['min-bid']);
-    }
-    if (isset($_GET['max-bid'])) {
-        $maxBid = htmlspecialchars($_GET['max-bid']);
     }
     if (isset($_GET['type'])) {
         $type = htmlspecialchars($_GET['type']);
@@ -40,14 +32,6 @@
         </div>
         <div class='advanced-search container-fluid'>
             <div class='row'>
-                <div class="input-group col-sm-4">
-                    <span class="input-group-addon">Min bid</span>
-                    <input type="number" name='min-bid' value="<?php echo $minBid; ?>" class="form-control" min='0'>
-                </div>
-                <div class="input-group col-sm-4">
-                    <span class="input-group-addon">Max bid</span>
-                    <input type="number" name='max-bid' class="form-control" value="<?php echo $maxBid; ?>" min='0'>
-                </div>
                 <div class="input-group col-sm-4">
                     <span class="input-group-addon">Type</span>
                     <select class='selectpicker form-control' name='type'>
