@@ -55,7 +55,7 @@
                     }
 
                     // get row count for pagination
-                    $query = "SELECT u.username, a.owner, a.item_name, a.bid_deadline 
+                    $query = "SELECT count(*)
                         FROM advertise_item a, users u
                         WHERE 
                         (" . $filter . ")
