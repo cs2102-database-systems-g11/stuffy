@@ -238,15 +238,17 @@ if ($name) {
             </div>
             <div class="panel-body">
                 <form name = "bidForm" action="bid.php" method="post">
+                    <input type="hidden" name = "owner" value = "<?php echo $owner ?>">
+                    <input type="hidden" name = "itemName" value = "<?php echo $item_name ?>">
+                    <input type="hidden" name = "url" value = "<?php echo $_SERVER['REQUEST_URI'] ?>">
+                    <input type="hidden" name = "buyout" value = "<?php echo $buyout_int ?>">
+                    <?php if ($buyout_int != ($highest_bid_int + 1)) { ?>
                     <div class="form-group">
                         <label for="pickup-location" class="control-label">Your Bid</label>
                         <input type="number" name='newBid' class="form-control" min = "<?php echo $next_highest_bid2 ?>" value="<?php echo $next_highest_bid2 ?>" <?php echo $maxAttr ?> autofocus required> 
-                        <input type="hidden" name = "owner" value = "<?php echo $owner ?>">
-                        <input type="hidden" name = "itemName" value = "<?php echo $item_name ?>">
-                        <input type="hidden" name = "url" value = "<?php echo $_SERVER['REQUEST_URI'] ?>">
-                        <input type="hidden" name = "buyout" value = "<?php echo $buyout_int ?>">
                     </div>
                     <button class="btn btn-default" name='bid-submit' type="submit">Submit</button>
+                    <?php } ?>
                     <?php if ($buyout_int > 0) { ?>
                     <button class="btn btn-default" name='buyout-submit' type="submit">Buyout</button>
                     <?php } ?>
